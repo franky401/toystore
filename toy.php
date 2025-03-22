@@ -16,6 +16,30 @@
 
 	 		  Retrieve info about toy from the db using provided PDO connection
 	 */
+	function get_toy_details(PDO $pdo, string $toy_id) {
+		$sql = "SELECT toy.*, 
+					   manuf.name AS manufacturer_name, 
+					   manuf.Street, 
+					   manuf.City, 
+					   manuf.State, 
+					   manuf.ZipCode, 
+					   manuf.phone, 
+					   manuf.contact
+				FROM toy 
+				JOIN manuf ON toy.manid = manuf.manid
+				WHERE toy.toynum = :toy_id";
+		
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute(['toy_id' => $toy_id]);
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+	
+	// Fetch toy details
+	$toy = get_toy_details($pdo, $toy_id);
+	
+	if (!$toy) {
+        die("Toy not found!");
+    }
 
 
 // Closing PHP tag  ?> 
@@ -60,52 +84,26 @@
 			<!-- 
 			  -- TO DO: Fill in ALL the placeholders for this toy from the db
   			  -->
-			
-			<div class="toy-details-container">
-				<div class="toy-image">
-					<!-- Display image of toy with its name as alt text -->
-					<img src="<?= '' ?>" alt="<?= '' ?>">
+				<section class="toy-details">
+				<div class="toy-container">
+					<div class="toy-image">
+						<img src="<?= htmlspecialchars($toy['imgSrc']) ?>" alt="<?= htmlspecialchars($toy['name']) ?>">
+					</div>
+					<div class="toy-info">
+						<h1><?= htmlspecialchars($toy['name']) ?></h1>
+						<p><strong>Description:</strong> <?= htmlspecialchars($toy['description']) ?></p>
+						<p><strong>Price:</strong> $<?= htmlspecialchars($toy['price']) ?></p>
+						<p><strong>Age Range:</strong> <?= htmlspecialchars($toy['agerange']) ?></p>
+						<p><strong>Number In Stock:</strong> <?= htmlspecialchars($toy['numinstock']) ?></p>
+
+						<h2>Manufacturer Information</h2>
+						<p><strong>Name:</strong> <?= htmlspecialchars($toy['manufacturer_name']) ?></p>
+						<p><strong>Address:</strong> <?= htmlspecialchars($toy['Street']) ?>, <?= htmlspecialchars($toy['City']) ?>, <?= htmlspecialchars($toy['State']) ?> <?= htmlspecialchars($toy['ZipCode']) ?></p>
+						<p><strong>Phone:</strong> <?= htmlspecialchars($toy['phone']) ?></p>
+						<p><strong>Contact:</strong> <?= htmlspecialchars($toy['contact']) ?></p>
+					</div>
 				</div>
-
-				<div class="toy-details">
-
-					<!-- Display name of toy -->
-			        <h1><?= '' ?></h1>
-
-			        <hr />
-
-			        <h3>Toy Information</h3>
-
-			        <!-- Display description of toy -->
-			        <p><strong>Description:</strong> <?= '' ?></p>
-
-			        <!-- Display price of toy -->
-			        <p><strong>Price:</strong> $ <?= '' ?></p>
-
-			        <!-- Display age range of toy -->
-			        <p><strong>Age Range:</strong> <?= '' ?></p>
-
-			        <!-- Display stock of toy -->
-			        <p><strong>Number In Stock:</strong> <?= '' ?></p>
-
-			        <br />
-
-			        <h3>Manufacturer Information</h3>
-
-			        <!-- Display name of manufacturer -->
-			        <p><strong>Name:</strong> <?= '' ?> </p>
-
-			        <!-- Display address of manufacturer -->
-			        <p><strong>Address:</strong> <?= '' ?></p>
-
-			        <!-- Display phone of manufacturer -->
-			        <p><strong>Phone:</strong> <?= '' ?></p>
-
-			        <!-- Display contact of manufacturer -->
-			        <p><strong>Contact:</strong> <?= '' ?></p>
-			    </div>
-			</div>
+			</section>
 		</main>
-
 	</body>
 </html>

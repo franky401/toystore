@@ -205,3 +205,33 @@ button:hover {
   color: darkgrey;
   text-align: justify;
 }
+
+ /* added to file  */ 
+
+ .toy-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start; /* Push everything to the left */
+  gap: 30px;
+  max-width: 90%;
+  margin: 20px auto;
+}
+
+.toy-image img {
+  max-width: 500px; /* Adjust as needed */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.toy-info {
+  flex-grow: 1;
+  max-width: 600px; /* Adjust for better alignment */
+}
+
+.toy-details p {
+  margin-bottom: 10px;
+  font-family: sans-serif;
+  color: darkgrey;
+  line-height: 1.5;
+}
